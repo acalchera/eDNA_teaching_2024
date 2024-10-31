@@ -244,7 +244,7 @@ Exit the DEMULTIPLEXED sub-directory.
 cd ..
 ```
 
-# 4. Checking for leftover primer sequences.
+# 4. Checking for leftover primer sequences
 
 To run DADA2 we need to first activate R. 
 
@@ -611,13 +611,13 @@ Now we go on to save our data so we could load it in later.
 ```{r, eval = F}
 # Make and save a fasta of our final ASV sequences.
 asv_fasta <- c(rbind(asv_headers, asv_seqs))
-write(asv_fasta, "ASVs_fungi.fa")
+write(asv_fasta, "Data/ASVs_fungi.fa")
 
 # Write our chimera screened and merge sequenc table to a text file. This will be our ASV table to work with from here. 
-write.table(t(seqtab_merge.nochim), "asv_table_fungi.txt", sep="\t")
+write.table(t(seqtab_merge.nochim), "Data/asv_table_fungi.txt", sep="\t")
 
 # Also save it as an .rds file to not corrupt any structure when we need to reload the table.
-saveRDS(seqtab_merge.nochim, 'asv_table_fungi.rds')
+saveRDS(seqtab_merge.nochim, 'Data/asv_table_fungi.rds')
 
 ```
 
@@ -807,11 +807,11 @@ saveRDS(ASV_table_fungi_cur, here("Data", "ASV_table_fungi_cur.rds"))
 > :memo: **Question 21:** Which parameters does the LULU algorithm consider in it's merging?  
 > :memo: **Question 22:** What are the default parameters? 
   
-# Diversity Analysis
+# 8. Diversity Analysis
 
 Now we have most of the technical processing of the sequencing results done and can finally move on to answering question. In this course we will care mostly about community composition and how it differs between some environmental groups. We will work with the data from one of the Biodiversity Exploratories: The Biosphere Reserve Schorfheide-Chorin. 
 
-## 8. Data initialization 
+## Data initialization 
 
 Before we can actually get into the questions we need to do a few last steps that have to do with cleaning our data so it is nice and presentable. It also makes it easier to work with. 
 
@@ -833,7 +833,8 @@ sequence_fungi <- base::paste(fungi_seqs_fasta)
 fungi_rep_seqs <- base::data.frame(seq_name_fungi, sequence_fungi)
 
 # Join the taxonomy table and the representative sequences
-tax_clean_fungi <- dplyr::left_join(tax_fungi, fungi_rep_seqs, by = 'sequence_fungi') %>% drop.na(seq_name_fungi)
+library(tidyr)
+tax_clean_fungi <- dplyr::left_join(tax_fungi, fungi_rep_seqs, by = 'sequence_fungi') %>% drop_na(seq_name_fungi)
 
 ```
 
