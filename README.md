@@ -1,6 +1,6 @@
 ---
 original authors: "Lukas Dreyling & Henrique Valim"
-date: "13-16.11.2023"
+date: "04-07.11.2024"
 ---
 
 # 2024 Mycology Master's module (Biodiversity and Ecosystem Health) eDNA barcoding pipeline
@@ -30,8 +30,8 @@ Most of our analyses will be done in [R](https://www.r-project.org/) using the [
 Specific tools in R come in "packages" that we need to install and load into our working environment. 
 
   * [dada2](https://benjjneb.github.io/dada2/): Accurate, high-resolution sample inference from amplicon sequencing data (denoising, filtering, clustering of amplicon sequence variants [ASVs] and assigning taxonomy)
-  * [decontam](https://benjjneb.github.io/decontam/): Identifying and removing potential contaminants.
-  * [LULU](https://github.com/tobiasgf/lulu): Distribution based post clustering curation of amplicon data.
+  * [decontam](https://benjjneb.github.io/decontam/): Identifying and removing potential contaminants
+  * [LULU](https://github.com/tobiasgf/lulu): Distribution based post clustering curation of amplicon data
   * [ShortRead](https://kasperdanielhansen.github.io/genbioconductor/html/ShortRead.html): FASTQ input and manipulation (reading and examining raw sequence reads)
   * [Biostrings](https://bioconductor.org/packages/release/bioc/html/Biostrings.html): Efficient manipulation of biological strings (reading and examining sequence data)
   * [phyloseq](https://joey711.github.io/phyloseq/): Explore microbiome profiles using R (useful for getting our data into a format that works with many other packages)
@@ -41,7 +41,7 @@ Specific tools in R come in "packages" that we need to install and load into our
   * [fantaxtic](https://github.com/gmteunisse/fantaxtic): Nested bar plots for phyloseq data 
   * [here](https://here.r-lib.org/): Package for easy file referencing for reproducible workflows
   * [microbiome](https://microbiome.github.io/tutorials/): Microbiome analytics
-  * [ranacapa](https://github.com/gauravsk/ranacapa): We'll use this for some evaluation plots.
+  * [ranacapa](https://github.com/gauravsk/ranacapa): We'll use this for some evaluation plots
 
 # 1. Adapter Trimming 
 
@@ -88,7 +88,7 @@ conda deactivate
 
 # 3. Demultiplexing
 
-To demultiplex (distinguish between our samples) we need the octamer tags and primers (reffered to as barcodes from here on) for each sample. We put these on your computers in a folder called BARCODES.
+To demultiplex (distinguish between our samples) we need the octamer tags and primers (referred to as barcodes from here on) for each sample. We put these on your computers in a folder called BARCODES.
 
 First we need to create a FASTA file from the barcodes so we can use it with a program called CUTADAPT. We take each line of the .txt of the barcodes and add a line containing info on which sample this barcode belongs to.
 
@@ -103,7 +103,7 @@ awk '{print">rev"NR"\n"$0}' ./BARCODES/fungi_rev_barcodes_big.txt > ./BARCODES/f
 
 ## Demultiplexing with cutadapt
 
-Create a subdirectory for the file that have the barcodes and primers removed. And enter it.
+Create a subdirectory for the file that have the barcodes and primers removed.
 ```{bash, eval = F}
 mkdir DEMULTIPLEXED
 ```
@@ -193,7 +193,7 @@ Use grep to get the read numbers by counting the lines beginning with >.
 grep -c '^>' *.fa | less 
 ```
 
-> :memo: **Question 4:** What is the difference between FASTQ and FASTA files? 
+> :memo: **Question 4:** What is the difference between FASTQ and FASTA files?  
 > :memo: **Question 5:** How many reads are in sample A31_B1? And how many reads are in Sample H12_B3?
   
 Now merge the two files from the two passes through cutadapt. 
@@ -291,7 +291,7 @@ fnFs <- sort(list.files(path = './Data/DEMULTIPLEXED/MERGED', pattern = "sample_
 fnRs <- sort(list.files(path = './Data/DEMULTIPLEXED/MERGED', pattern = "sample_demux.2.fastq", full.names = TRUE))
 ```
 
-Dada2 cannot deal with ambiguous bases which are for example contauined in our primers. So we filter out ambiguous Ns with the filterAndTrim function setting maxN to zero.
+Dada2 cannot deal with ambiguous bases which are for example contained in our primers. So we filter out ambiguous Ns with the filterAndTrim function setting maxN to zero.
 Place the N-filterd files into a filtN/ subdirectory.
 ```{r, eval = F}
 fnFs.filtN <- file.path(path = './Data/DEMULTIPLEXED/MERGED', "filtN", basename(fnFs)) 
@@ -744,8 +744,8 @@ ps_fungi_noncontam_pruned <- phyloseq::prune_taxa(phyloseq::taxa_sums(ps_fungi_n
                                         ps_fungi_noncontam)
 ```
 
-> :memo: **Question 17:** Which taxa were removed from the original datasets as contaminants? 
-> :memo: **Question 18:** How many taxa remain after this step?
+> :memo: **Question 17:** Which taxa were removed from the original datasets as contaminants?  
+> :memo: **Question 18:** How many taxa remain after this step?  
 > :memo: **Question 19:** What is the difference between the frequency, prevalence and combined approach in the decontam function?
   
 ## LULU curation
@@ -803,8 +803,8 @@ saveRDS(ASV_table_fungi_cur, here("Data", "ASV_table_fungi_cur.rds"))
 
 ```
 
-> :memo: **Question 20:** How many reads were merged? 
-> :memo: **Question 21:** Which parameters does the LULU algorithm consider in it's merging? 
+> :memo: **Question 20:** How many reads were merged?  
+> :memo: **Question 21:** Which parameters does the LULU algorithm consider in it's merging?  
 > :memo: **Question 22:** What are the default parameters? 
   
 # Diversity Analysis
@@ -1256,6 +1256,6 @@ vegan::permutest(dispr_tree_sch)
 
 ```
 
-> :memo: **Question 29:** What other options can you find for distance measures between samples? 
+> :memo: **Question 29:** What other options can you find for distance measures between samples?  
 > :memo: **Question 30:** Are there other ordination methods apart from NMDS?  
 > :memo: **Question 31:** Are there statistically meaningful differences between substrates? Between tree species? 
