@@ -1106,6 +1106,7 @@ phyloseq::sample_data(phy_sch_ord_top25_named_plot) <- phyloseq::sample_data(sam
 To create some nice plots, we will need to define some colors and a function that fills the bars that we create.
 
 ```{r, eval = F}
+library(paletteer)
 my_cols <- paletteer::paletteer_d('ggsci::default_igv')
 
 unique_orders <- sort(unique(taxa_names_sch_ord)) 
