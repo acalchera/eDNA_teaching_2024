@@ -775,7 +775,7 @@ blastn -db ASVs_fungi.fa \
 -qcov_hsp_perc 80 \
 -perc_identity 84 \
 -num_threads 6 \
--query ~/ASVs_fungi.fa
+-query ASVs_fungi.fa
 
 conda deactivate
 
